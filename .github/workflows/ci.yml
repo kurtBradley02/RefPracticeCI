@@ -11,3 +11,10 @@ jobs:
 
       - name: Say Hello
         run: echo "Hello World"
+      
+      - name: Simple Math
+        run: |
+          a=1
+          b=2
+          sum=$((a+b))
+          echo "Sum is: $sum"
