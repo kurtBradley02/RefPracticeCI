@@ -27,3 +27,19 @@ jobs:
           else
             echo "minor"
           fi
+
+      - name: Read Layer Result
+        run: |
+          result_line=$(cat results)
+          echo "Raw line: $result_line"
+
+          db_result=$(echo "$result_line" | cut -d '=' -f2 | tr -d ' "')
+
+                    echo "Parsed value: $db_result"
+
+          if [ "$db_result" = "pass" ]; then
+            echo "✅ DB layer verified: PASS"
+          else
+            echo "❌ DB layer verification: FAIL"
+            exit 1
+          fi
