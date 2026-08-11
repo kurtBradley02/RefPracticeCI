@@ -30,7 +30,7 @@ jobs:
 
       - name: Read Layer Result
         run: |
-          result_line=$(cat results)
+          result_line=$(cat test-results/results)
           echo "Raw line: $result_line"
 
           db_result=$(echo "$result_line" | cut -d '=' -f2 | tr -d ' "')
