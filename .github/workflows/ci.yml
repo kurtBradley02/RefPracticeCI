@@ -22,7 +22,7 @@ jobs:
       - name: If Ternary check
         run: |
           age=18
-          if ["$age" -ge 18]; then
+          if [ "$age" -ge 18 ]; then
             echo "adult"
           else
             echo "minor"
