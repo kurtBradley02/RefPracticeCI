@@ -13,8 +13,8 @@ jobs:
 
     - name: ex2
       run: |
-      a=1
-      b=2
-      sum=$((a+b))
-      echo "SUM: $sum"
-    
+        a=1
+        b=2
+        sum=$((a+b))
+        echo "SUM: $sum"
+      
