@@ -9,9 +9,10 @@ jobs:
     steps:
 
     - name: ex1
-        run: echo "Hello World"
+      run: echo "Hello World"
 
     - name: ex2
+      run: |
       a=1
       b=2
       sum=$((a+b))
