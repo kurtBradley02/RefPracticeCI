@@ -1,4 +1,4 @@
-name: VerificationTestBuild
+name: WarmUp
 
 on:
   workflow_dispatch:
@@ -7,39 +7,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
 
-      - name: Say Hello
+    - name: ex1
         run: echo "Hello World"
-      
-      - name: Simple Math
-        run: |
-          a=1
-          b=2
-          sum=$((a+b))
-          echo "Sum is: $sum"
 
-      - name: If Ternary check
-        run: |
-          age=18
-          if [ "$age" -ge 18 ]; then
-            echo "adult"
-          else
-            echo "minor"
-          fi
-
-      - name: Read Layer Result
-        run: |
-          result_line=$(cat test-results/results)
-          echo "Raw line: $result_line"
-
-          db_result=$(echo "$result_line" | cut -d '=' -f2 | tr -d ' "')
-
-                    echo "Parsed value: $db_result"
-
-          if [ "$db_result" = "pass" ]; then
-            echo "✅ DB layer verified: PASS"
-          else
-            echo "❌ DB layer verification: FAIL"
-            exit 1
-          fi
+    - name: ex2
+      a=1
+      b=2
+      sum=$((a+b))
+      echo "SUM: $sum"
+    
