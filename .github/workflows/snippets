@@ -1,1 +1,132 @@
+# ============================================================
+# 1. NAME (workflow title)
+# ============================================================
+name: VerificationTestBuild
 
+# ============================================================
+# 2. ON - TRIGGERS (pick / combine what you need)
+# ============================================================
+on:
+  workflow_dispatch:          # manual "Run workflow" button
+
+  push:
+    branches: [ main ]        # runs on push to main
+
+  pull_request:
+    branches: [ main ]        # runs on PR targeting main
+
+  schedule:
+    - cron: '0 2 * * *'       # runs every day at 2:00 AM UTC
+
+# ============================================================
+# WORKFLOW-LEVEL ENV VAR (available to all jobs/steps)
+# ============================================================
+env:
+  APP_ENV: "ci"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v4
+
+      # ============================================================
+      # 3. SIMPLE RUN WITH ECHO
+      # ============================================================
+      - name: Say Hello
+        run: echo "Hello World"
+
+      # ============================================================
+      # 4. DECLARING VARIABLES AND ECHOING OUTPUT
+      # ============================================================
+      - name: Simple Math
+        run: |
+          a=1
+          b=2
+          sum=$((a + b))
+          echo "Sum is: $sum"
+
+      - name: Print workflow env var
+        run: echo "APP_ENV is $APP_ENV"
+
+      - name: Set output and use it in next step
+        id: calc
+        run: echo "result=42" >> "$GITHUB_OUTPUT"
+
+      - name: Use previous step's output
+        run: echo "The result was ${{ steps.calc.outputs.result }}"
+
+      # ============================================================
+      # 5. READING A SPECIFIC FILE / LINE
+      # test-results/summary.txt looks like:
+      #   test_result=pass
+      #   test_result=fail
+      # ============================================================
+      - name: Read specific lines from file
+        run: |
+          line1=$(sed -n '1p' test-results/summary.txt)
+          line2=$(sed -n '2p' test-results/summary.txt)
+          echo "First line: $line1"
+          echo "Second line: $line2"
+
+      - name: Extract value only (after the =)
+        id: read_result
+        run: |
+          result1=$(sed -n '1p' test-results/summary.txt | cut -d'=' -f2)
+          result2=$(sed -n '2p' test-results/summary.txt | cut -d'=' -f2)
+          echo "Result 1: $result1"
+          echo "Result 2: $result2"
+          echo "value=$result1" >> "$GITHUB_OUTPUT"
+
+      # ============================================================
+      # 6. CONTROL FLOW - IF CONDITION
+      # ============================================================
+      - name: Pass message (step-level if)
+        if: steps.read_result.outputs.value == 'pass'
+        run: echo "Test passed!"
+
+      - name: Fail message (step-level if)
+        if: steps.read_result.outputs.value == 'fail'
+        run: echo "Test failed!"
+
+      - name: If/else inside a single shell step
+        run: |
+          result=$(sed -n '1p' test-results/summary.txt | cut -d'=' -f2)
+          if [ "$result" == "pass" ]; then
+            echo "Test passed!"
+          else
+            echo "Test failed!"
+          fi
+
+      # ============================================================
+      # 6b. CONTROL FLOW - LOOPS
+      # ============================================================
+      - name: Simple for loop
+        run: |
+          for i in 1 2 3 4 5; do
+            echo "Number: $i"
+          done
+
+      - name: Loop through every line in the file
+        run: |
+          while IFS= read -r line; do
+            value=$(echo "$line" | cut -d'=' -f2)
+            if [ "$value" == "pass" ]; then
+              echo "PASS -> $line"
+            else
+              echo "FAIL -> $line"
+            fi
+          done < test-results/summary.txt
+
+  # ============================================================
+  # 6c. LOOP - MATRIX STRATEGY (runs job multiple times in parallel)
+  # ============================================================
+  build-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16, 18, 20]
+    steps:
+      - name: Print version
+        run: echo "Running on Node ${{ matrix.node-version }}"
