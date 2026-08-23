@@ -21,7 +21,7 @@ jobs:
             run: |
               a=18
               if: a >= 18
-              echo: "Adult"
+                echo: "Adult"
             
 
 
