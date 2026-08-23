@@ -82,21 +82,11 @@ jobs:
       # ============================================================
       # 6. CONTROL FLOW - IF CONDITION
       # ============================================================
-      - name: Pass message (step-level if)
-        if: steps.read_result.outputs.value == 'pass'
-        run: echo "Test passed!"
-
-      - name: Fail message (step-level if)
-        if: steps.read_result.outputs.value == 'fail'
-        run: echo "Test failed!"
-
-      - name: If/else inside a single shell step
+      - name: Control Flow
         run: |
-          result=$(sed -n '1p' test-results/summary.txt | cut -d'=' -f2)
-          if [ "$result" == "pass" ]; then
-            echo "Test passed!"
-          else
-            echo "Test failed!"
+          a=18
+          if [ "$a" -ge 18 ]; then
+            echo "Adult"
           fi
 
       # ============================================================
