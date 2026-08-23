@@ -6,15 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
 
-    - name: ex1
-      run: echo "Hello World"
 
-    - name: ex2
-      run: |
-        a=1
-        b=2
-        sum=$((a+b))
-        echo "SUM: $sum"
+
       
