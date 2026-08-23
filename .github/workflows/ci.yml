@@ -20,8 +20,9 @@ jobs:
           - name: Control Flow
             run: |
               a=18
-              if: a >= 18
-                echo: "Adult"
+              if [ "$a" -ge 18 ]; then
+                echo "Adult"
+              fi
             
 
 
