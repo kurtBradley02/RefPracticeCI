@@ -9,6 +9,20 @@ jobs:
     steps:
       - name: ex1
         run: echo "Hello World"
+
+      - name: ex2
+        run: |
+          a=1
+          b=2
+          sum=$((a+b))
+          echo "Sum: $sum"
+
+      - name: ex3
+        run: |
+          a=18
+          if ["$a" -ge 18] then
+            echo "Adult"
+          fi
       
             
 
