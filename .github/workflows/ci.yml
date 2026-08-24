@@ -20,7 +20,7 @@ jobs:
       - name: ex3
         run: |
           a=18
-          if ["$a" -ge 18] then
+          if ["$a" -ge 18]; then
             echo "Adult"
           fi
       
