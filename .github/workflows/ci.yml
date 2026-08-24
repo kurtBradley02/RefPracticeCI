@@ -7,22 +7,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-          - name: Say Hello
-            run: echo "Hello World"
-
-          - name: Simple Math
-            run: |
-              a=1
-              b=2
-              sum=$((a+b))
-              echo "Sum is: $sum"
-
-          - name: Control Flow
-            run: |
-              a=18
-              if [ "$a" -ge 18 ]; then
-                echo "Adult"
-              fi
+      - name: ex1
+      - run: echo "Hello World"
+      
             
 
 
